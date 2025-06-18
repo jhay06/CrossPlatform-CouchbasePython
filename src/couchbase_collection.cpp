@@ -367,7 +367,7 @@ std::string CouchBaseCollection::saveDocument(nlohmann::json jsonDocument,std::s
     std::string  oldDocId = docId;
 
     CBLError error;
-    std::string docId = this->scopeName + ":" + this->collectionName + "_" + generateUUID();
+      docId = this->scopeName + ":" + this->collectionName + "_" + generateUUID();
      if(!oldDocId.empty()){
         //generate a new UUID 
         docId = oldDocId;
