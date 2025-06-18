@@ -1,0 +1,5 @@
+Setting onConnected callback.
+Connected to Couchbase Lite database at: mydb
+Scope: CaptivePortal
+Collection already exists, opening collection: QueueingSystem
+Creating replicator

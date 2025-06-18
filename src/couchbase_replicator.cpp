@@ -146,12 +146,11 @@ void changeListener(void* context , CBLReplicator* repl, const CBLReplicatorStat
 
 
 }
-void CouchbaseReplicator::start(){
-    if(!this->couchbase){
-        std::cerr << "Couchbase not set" << std::endl;
-        return;
-    }
+ 
 
+void CouchbaseReplicator::start(){
+     CBLLog_SetConsoleLevel(kCBLLogDebug);
+  
     if(!this->couchbase->isConnected()){
 
         std::cerr << "Couchbase not connected" << std::endl;
@@ -170,7 +169,7 @@ void CouchbaseReplicator::start(){
         return;
 
     }
-    std::cout << "Endpoint created" << std::endl;
+    std::cout << "Endpoint created"  <<  this->targetUrl <<    std::endl;
     int len = this->collections.size();
     if(len == 0){
         std::cerr << "No collections added to replicator" << std::endl;
@@ -192,10 +191,11 @@ void CouchbaseReplicator::start(){
     replConfig.database ={0};
     replConfig.disableAutoPurge = !this->autoPurge;
     replConfig.endpoint = targetEndpoint;
-      replConfig.collectionCount =len;
+    
+    replConfig.collectionCount =len;
     
 
-  replConfig.collections = collectionConfig;
+    replConfig.collections = collectionConfig;
 
     switch((int) this->replicationType){
     case ReplicationType::PUSH:
@@ -218,7 +218,8 @@ void CouchbaseReplicator::start(){
     replConfig.maxAttempts = this->maxAttempts;
     CBLAuthenticator *basicAuth = nullptr;
     if(!this->username.empty() && !this->password.empty()){
-
+        std::cout << "Setting up basic authentication" << std::endl;
+         
         basicAuth = CBLAuth_CreatePassword(FLStr(this->username.c_str()),
                                            FLStr(this->password.c_str()));
         replConfig.authenticator = basicAuth;
@@ -226,8 +227,7 @@ void CouchbaseReplicator::start(){
     }
 
 
-    serverReplicator = CBLReplicator_Create(&replConfig, &err);
-    std::cout << "Authenticator created" << std::endl;
+    serverReplicator = CBLReplicator_Create(&replConfig, &err); 
     CBLEndpoint_Free(targetEndpoint);
     if(basicAuth != nullptr){
         CBLAuth_Free(basicAuth);
@@ -252,7 +252,7 @@ void CouchbaseReplicator::start(){
     }
     std::cout << "Replicator started" << std::endl;
     CBLListenerToken *token = CBLReplicator_AddChangeListener(serverReplicator, changeListener, this);
-    CBLReplicator_Start(this->serverReplicator, false);
+    CBLReplicator_Start(this->serverReplicator, true);
 
 
 

@@ -52,6 +52,7 @@ void CouchBaseLite::connect(){
 
     this->connected  = true ;
     // Set the callback if provided
+    std::cout << "Connected to Couchbase Lite database at: " << this->localDB << std::endl;
     if (this->onConnectedCallback) {
         this->onConnectedCallback();
     }

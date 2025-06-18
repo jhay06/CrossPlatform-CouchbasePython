@@ -18,7 +18,7 @@ void CouchBaseLite_setLocalDB(CouchBaseLite *db, const char *path) {
     }
 }
 
-int CouchBaseLite_open(CouchBaseLite *db, const char *path) {
+int CouchBaseLite_open(CouchBaseLite *db) {
     if (db) {
         db->connect();
         return db->isConnected() ? 1 : 0;

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(couchbase_lite_cffi CXX)
 set(CMAKE_CXX_STANDARD 17)  
 # Set your Couchbase Lite C SDK path
-message(${CMAKE_CURRENT_SOURCE_DIR})
+message(${CMAKE_CURRENT_SOURCE_DIR}) 
 set(CBL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/mac/libcblite/include")
 set(CBL_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/mac/libcblite/lib")
 
