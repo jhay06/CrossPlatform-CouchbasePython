@@ -1,0 +1,9 @@
+build/
+build/*
+venv/
+venv/*
+.venv/*
+.venv/
+*.so
+*/*.so
+
