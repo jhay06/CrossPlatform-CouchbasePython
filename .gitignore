@@ -12,3 +12,6 @@ venv/*
 */*.dll
 *.pyc
 */*.pyc
+*.whl
+*/*.whl
+dist/
