@@ -6,4 +6,9 @@ venv/*
 .venv/
 *.so
 */*.so
-
+*/*.dylib
+*.dylib
+*.dll
+*/*.dll
+*.pyc
+*/*.pyc
