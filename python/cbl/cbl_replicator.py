@@ -1,5 +1,8 @@
 from . import ffi , lib 
 ffi.cdef("""
+typedef struct CouchBaseLite CouchBaseLite;
+typedef struct CouchBaseCollection CouchBaseCollection;
+typedef struct CBLCollection CBLCollection;
 typedef struct CouchbaseReplicator CouchbaseReplicator;
 typedef void (*SyncStatusChangedCallback)();
 typedef void (*SyncStoppedCallback)();

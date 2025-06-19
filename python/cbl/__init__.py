@@ -15,12 +15,27 @@ def detect_arch():
     
 platform_arch = detect_arch()
 
+lib_path_android = 'couchbase_lite_cffi.so'
 lib_path = os.path.join(os.path.dirname(__file__), "libs", platform_arch, "couchbase_lite_cffi.so")
- 
+
+not_in_lib = False 
 #chec if the library exists
 if not os.path.exists(lib_path):
-    raise FileNotFoundError(f"Library not found at {lib_path}. Please build the CFFI bindings first.")
+    #check in android libs folder , 
+    not_in_lib = True
+    #raise FileNotFoundError(f"Library not found at {lib_path}. Please build the CFFI bindings first.")
+
+if not_in_lib:
+    
+    lib_path = lib_path_android  
+
+try:
+    lib = ffi.dlopen(lib_path)
+except OSError as e:
+    raise RuntimeError(f"Failed to load the library at {lib_path}. Ensure it exists and is compatible with your platform.") from e
 
 
-
-lib = ffi.dlopen(lib_path)
+from .cbl_replicator import CBLReplicator, ReplicationType
+from .cbl_collection import CBLCollection
+from .couchbase_lite import CouchBaseLite
+ 

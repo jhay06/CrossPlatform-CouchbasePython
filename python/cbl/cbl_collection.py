@@ -1,7 +1,10 @@
 from . import ffi, lib 
 
 ffi.cdef("""
+
+    typedef struct CouchBaseLite CouchBaseLite;
     typedef struct CouchBaseCollection CouchBaseCollection;
+        
     typedef struct CBLCollection CBLCollection;
     typedef void (*CollectionChangeCallback)(void);
     typedef void (*CollectionOpenedCallback)();

@@ -12,6 +12,10 @@ ffi.cdef("""
         bool CouchBaseLite_isConnected(CouchBaseLite* db);
         bool CouchBaseLite_disconnect(CouchBaseLite* db);
         void CouchBaseLite_onConnected(CouchBaseLite* db, isConnectedCallback callback);
+        char* CouchBaseLite_CurrentDatabaseDirectory(CouchBaseLite* db);
+        void CouchBaseLite_SetDatabaseDirectory(CouchBaseLite* db, const char* path);
+         
+        void initContext(CouchBaseLite *db, const char* tempDir, const char* pathDir);
  """)
 
 class CouchBaseLite:
@@ -65,4 +69,29 @@ class CouchBaseLite:
         # Set the C callback in the CouchBaseLite instance
         self._c_connected_callback = c_connected_callback 
         lib.CouchBaseLite_onConnected(self._db, c_connected_callback)
+    
+    def current_database_directory(self):
+        try:
+            dir_path = lib.CouchBaseLite_CurrentDatabaseDirectory(self._db)
+            print(f"Current database directory: {dir_path}")
+            if not dir_path:
+                raise RuntimeError("Failed to get current database directory")
+            return ffi.string(dir_path).decode('utf-8')
+        except Exception as e: 
+            print(f"Error getting current database directory: {e}")
+            return None
+    def set_database_directory(self, path):
+        if not path:
+            raise ValueError("Path cannot be empty")
+        n_path = ffi.new("char[]", path)
+        lib.CouchBaseLite_SetDatabaseDirectory(self._db, n_path)
+        print(f"Database directory set to: {path}")
+    
+    def init_context(self, temp_dir, path_dir):
+        if not temp_dir or not path_dir:
+            raise ValueError("Temporary directory and path directory cannot be empty")
+        n_tempdir = ffi.new("char[]", temp_dir)
+        n_pathdir = ffi.new("char[]", path_dir)
+        lib.initContext(self._db, n_tempdir, n_pathdir)
+        print(f"Context initialized with temp_dir: {temp_dir} and path_dir: {path_dir}")
     
